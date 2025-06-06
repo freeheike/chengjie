@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Love for LYY</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            text-align: center;
+        }
+        #name {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff69b4;
+            font-family: 'Arial', sans-serif;
+            font-size: 48px;
+            text-align: center;
+            opacity: 0;
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff69b4;
+            transition: opacity 2s ease-in-out;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite;
+            opacity: 0;
+            box-shadow: 0 0 10px #fff;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(1.5); }
+            50% { opacity: 1; transform: scale(2.2); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff69b4;
+            transform: rotate(45deg);
+            animation: float var(--duration) infinite;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 10px #ff69b4);
+        }
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff69b4;
+        }
+        .heart:before {
+            left: -10px;
+        }
+        .heart:after {
+            top: -10px;
+        }
+        @keyframes float {
+            0% {
+                transform: rotate(45deg) translateY(0) translateX(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: rotate(45deg) translateY(-50vh) translateX(20px) scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-100vh) translateX(-20px) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">加载中...</div>
+    <div id="name">程婕</div>
+    <div class="stars"></div>
+    <script>
+        // 创建星星背景
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 4 + 2 + 'px'; // 更大的星星
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.setProperty('--duration', Math.random() * 2 + 1 + 's'); // 更快的闪动
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 创建爱心
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.setProperty('--duration', Math.random() * 2 + 2 + 's'); // 更快的动画
+            heart.style.animationDelay = Math.random() * 0.5 + 's'; // 更短的延迟
+            document.body.appendChild(heart);
+
+            // 动画结束后移除爱心
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        // 创建多个爱心
+        function createMultipleHearts() {
+            const count = 4; // 每次创建5个爱心
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100); // 每个爱心间隔100ms
+            }
+        }
+
+        // 定期创建新爱心
+        function startHeartCreation() {
+            // 每200ms创建一组爱心
+            setInterval(createMultipleHearts, 100);
+        }
+
+        // 等待资源加载完成
+        window.addEventListener('load', function() {
+            document.getElementById('loading').style.display = 'none';
+            createStars();
+            startHeartCreation();
+            
+            // 5秒后显示名字
+            setTimeout(() => {
+                document.getElementById('name').style.opacity = '1';
+            }, 3000);
+        });
+
+        // 处理窗口大小变化
+        window.addEventListener('resize', () => {
+            // 可以在这里添加响应式调整
+        });
+
+        // 禁用双击缩放
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html> 
